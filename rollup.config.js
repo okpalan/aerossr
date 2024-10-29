@@ -10,7 +10,11 @@ import polyfillNode from 'rollup-plugin-polyfill-node'; // Import polyfill plugi
 const bs = browserSync.create();
 
 export default {
-    input: 'src/index.ts', // Entry point
+    // Define multiple entry points
+    input: {
+        app: 'src/index.ts', // Main application entry
+        cli: 'src/cli/cli.ts' // CLI entry
+    },
     output: [
         {
             file: 'public/aerossr.iife.js', // Output for IIFE format
@@ -26,6 +30,12 @@ export default {
             file: 'public/aerossr.cjs.js', // Output for CommonJS format
             format: 'cjs',                  // CommonJS format
             sourcemap: true,                // Enable source maps
+        },
+        {
+            file: 'public/aerossr.cli.js', // Output for CLI in CommonJS format
+            format: 'cjs',                  // CommonJS format
+            sourcemap: true,                // Enable source maps
+            exports: 'default',              // Specify the exports
         }
     ],
     plugins: [
