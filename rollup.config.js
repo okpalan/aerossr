@@ -14,18 +14,26 @@ export default {
         app: 'src/index.ts',
         cli: 'src/cli/cli.ts'
     },
-    output: {
-        dir: 'public', // Use output.dir instead of multiple output.file
-        format: 'iife', // Set a default format
-        sourcemap: true,
-        entryFileNames: '[name].js', // Use named output files
-        chunkFileNames: '[name]-[hash].js', // Use a hash for chunk file names
-        globals: {
-            http: 'http',
-            promises: 'promises',
-            path: 'path',
+    output: [
+        {
+            dir: 'public', // Output directory for code-splitting
+            format: 'cjs', // Use CommonJS format for code-splitting
+            sourcemap: true,
+            entryFileNames: '[name].js', // Named outputs
+            chunkFileNames: '[name]-[hash].js', // Use a hash for chunk file names
+            globals: {
+                http: 'http',
+                promises: 'promises',
+                path: 'path',
+            },
+        },
+        {
+            file: 'public/aerossr.cli.js', // CLI specific output
+            format: 'cjs', // CommonJS format
+            sourcemap: true,
+            exports: 'default', // Specify the exports
         }
-    },
+    ],
     plugins: [
         polyfillNode(),
         resolve(),

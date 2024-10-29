@@ -1,5 +1,3 @@
-// src/create.ts
-
 export function createResource(type: string, name: string): void {
     switch (type.toLowerCase()) {
         case 'user':
@@ -31,3 +29,12 @@ function createTask(name: string): void {
     console.log(`Task '${name}' created successfully.`);
     // Add additional task creation logic here.
 }
+
+
+
+export function deleteResource(type: string, name: string): void {
+    console.log(`Deleting ${type} named '${name}'...`);
+    // Implement deletion logic here
+}
+
+export function delet

@@ -1,7 +1,5 @@
-// src/cli.ts
 import { program } from 'commander';
-import { createResource } from './create';
-// import { deleteResource } from './delete';
+import { createResource } from './utils';
 
 program
     .version('1.0.0')
