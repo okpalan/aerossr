@@ -3,48 +3,36 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import browserSync from 'browser-sync';
 import alias from '@rollup/plugin-alias';
-import { resolve as pathResolve } from 'path'; // Import path resolve to handle aliases
-import polyfillNode from 'rollup-plugin-polyfill-node'; // Import polyfill plugin
+import { resolve as pathResolve } from 'path';
+import polyfillNode from 'rollup-plugin-polyfill-node';
 
-// Initialize browser-sync instance
 const bs = browserSync.create();
 
 export default {
     // Define multiple entry points
     input: {
-        app: 'src/index.ts', // Main application entry
-        cli: 'src/cli/cli.ts' // CLI entry
+        app: 'src/index.ts',
+        cli: 'src/cli/cli.ts'
     },
-    output: [
-        {
-            file: 'public/aerossr.iife.js', // Output for IIFE format
-            format: 'iife',                  // Immediately Invoked Function Expression for browser
-            sourcemap: true,                 // Enable source maps
-            globals: {
-                http: 'http',
-                promises: 'promises',
-                path: 'path',
-            },
-        },
-        {
-            file: 'public/aerossr.cjs.js', // Output for CommonJS format
-            format: 'cjs',                  // CommonJS format
-            sourcemap: true,                // Enable source maps
-        },
-        {
-            file: 'public/aerossr.cli.js', // Output for CLI in CommonJS format
-            format: 'cjs',                  // CommonJS format
-            sourcemap: true,                // Enable source maps
-            exports: 'default',              // Specify the exports
+    output: {
+        dir: 'public', // Use output.dir instead of multiple output.file
+        format: 'iife', // Set a default format
+        sourcemap: true,
+        entryFileNames: '[name].js', // Use named output files
+        chunkFileNames: '[name]-[hash].js', // Use a hash for chunk file names
+        globals: {
+            http: 'http',
+            promises: 'promises',
+            path: 'path',
         }
-    ],
+    },
     plugins: [
-        polyfillNode(), // Add polyfill for Node.js built-ins
-        resolve(), // Resolve node modules
-        commonjs(), // Convert CommonJS to ES6
-        typescript({ // Use the TypeScript plugin
-            tsconfig: './tsconfig.json', // Use the tsconfig file
-            clean: true, // Clean the output directory before each build
+        polyfillNode(),
+        resolve(),
+        commonjs(),
+        typescript({
+            tsconfig: './tsconfig.json',
+            clean: true,
         }),
         alias({
             entries: [
@@ -54,20 +42,19 @@ export default {
         {
             name: 'browser-sync',
             buildEnd: () => {
-                // Start browser-sync server after build is complete
                 bs.init({
                     server: {
-                        baseDir: 'public', // Serve files from the 'public' directory
-                        index: 'index.html' // Specify the index file
+                        baseDir: 'public',
+                        index: 'index.html'
                     },
-                    open: true, // Automatically open the browser
-                    notify: true // Show notifications for changes
+                    open: true,
+                    notify: true
                 });
             }
         }
     ],
     watch: {
-        clearScreen: false, // Prevent clearing the console on rebuild
-        include: 'src/**' // Watch for changes in the src directory
+        clearScreen: false,
+        include: 'src/**'
     }
 };
