@@ -27,6 +27,7 @@ export class LRUCache {
     get(key: string): any {
         if (!this.map.has(key)) return null;
         const value = this.map.get(key);
+        // Move the accessed item to the end to signify recent use
         this.map.delete(key);
         this.map.set(key, value);
         return value;
@@ -36,7 +37,11 @@ export class LRUCache {
         if (this.map.has(key)) {
             this.map.delete(key);
         } else if (this.map.size === this.capacity) {
-            this.map.delete(this.map.keys().next().value);
+            // Evict the least recently used item (the first item in Map)
+            const leastRecentlyUsedKey = this.map.keys().next().value; // Get the first key
+            if (leastRecentlyUsedKey !== undefined) { // Check if it's defined
+                this.map.delete(leastRecentlyUsedKey); // Delete the least recently used key
+            }
         }
         this.map.set(key, value);
     }
@@ -60,9 +65,10 @@ export class MRUCache {
         if (this.map.has(key)) {
             this.map.delete(key);
         } else if (this.map.size === this.capacity) {
-            const mostRecentlyUsedKey = Array.from(this.map.keys()).pop();
-            if (mostRecentlyUsedKey) {
-                this.map.delete(mostRecentlyUsedKey);
+            // Evict the most recently used item (the last item in Map)
+            const mostRecentlyUsedKey = Array.from(this.map.keys()).pop(); // Get the last key
+            if (mostRecentlyUsedKey !== undefined) { // Check if it's defined
+                this.map.delete(mostRecentlyUsedKey); // Delete the most recently used key
             }
         }
         this.map.set(key, value);

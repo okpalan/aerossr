@@ -43,7 +43,8 @@ export default {
         resolve(), // Resolve node modules
         commonjs(), // Convert CommonJS to ES6
         typescript({ // Use the TypeScript plugin
-            tsconfig: './tsconfig.json' // Use the tsconfig file
+            tsconfig: './tsconfig.json', // Use the tsconfig file
+            clean: true, // Clean the output directory before each build
         }),
         alias({
             entries: [

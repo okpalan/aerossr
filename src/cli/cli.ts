@@ -1,40 +1,33 @@
+// src/cli.ts
 import { program } from 'commander';
-import { createResource } from './create'; 
-import { deleteResource } from './delete';
+import { createResource } from './create';
+// import { deleteResource } from './delete';
 
 program
     .version('1.0.0')
-    .description('AeroSSR Command Line Interface');
-
-// Create command
-program
-    .command('create <type>')
-    .description('Create a new resource of the specified type')
+    .description('AeroSSR Command Line Interface')
+    .option('-c, --create <type>', 'Create a new resource of the specified type')
     .option('-n, --name <name>', 'Name of the resource')
-    .action((type, options) => {
-        if (!options.name) {
-            console.error('Error: --name option is required when creating a resource.');
+    .action((options) => {
+        if (options.create) {
+            if (!options.name) {
+                console.error('Error: --name option is required when creating a resource.');
+                process.exit(1);
+            }
+            // Call the createResource function with the provided options
+            createResource(options.create, options.name);
+        } else {
+            console.error('Error: --create option is required.');
             process.exit(1);
         }
-        createResource(type, options.name); // Call your create function
     });
 
-// Delete command
 program
     .command('delete <type>')
     .description('Delete a specified resource')
     .action((type) => {
-        deleteResource(type); // Call your delete function
+        console.log(`Deleting resource of type: ${type}`);
+        // Add your resource deletion logic here
     });
 
-// List command (example)
-program
-    .command('list')
-    .description('List all resources')
-    .action(() => {
-        console.log('Listing all resources...');
-        // Add logic to list resources
-    });
-
-// Parse command-line arguments
-program.parse(process.argv);
+program.parse(process.argv); // Parse command line arguments.
