@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "src/*"],
+      "@components": ["src/components"]
+    }
+  },
+  "include": ["src/**/*", "src/shims.d.ts"], // Ensure shims.d.ts is included
+  "exclude": ["node_modules"]
+}
