@@ -4,6 +4,7 @@ import typescript from 'rollup-plugin-typescript2';
 import browserSync from 'browser-sync';
 import alias from '@rollup/plugin-alias';
 import { resolve as pathResolve } from 'path'; // Import path resolve to handle aliases
+import polyfillNode from 'rollup-plugin-polyfill-node'; // Import polyfill plugin
 
 // Initialize browser-sync instance
 const bs = browserSync.create();
@@ -14,15 +15,21 @@ export default {
         {
             file: 'public/aerossr.iife.js', // Output for IIFE format
             format: 'iife',                  // Immediately Invoked Function Expression for browser
-            sourcemap: true                  // Enable source maps
+            sourcemap: true,                 // Enable source maps
+            globals: {
+                http: 'http',
+                promises: 'promises',
+                path: 'path',
+            },
         },
         {
             file: 'public/aerossr.cjs.js', // Output for CommonJS format
             format: 'cjs',                  // CommonJS format
-            sourcemap: true                  // Enable source maps
+            sourcemap: true,                // Enable source maps
         }
     ],
     plugins: [
+        polyfillNode(), // Add polyfill for Node.js built-ins
         resolve(), // Resolve node modules
         commonjs(), // Convert CommonJS to ES6
         typescript({ // Use the TypeScript plugin
