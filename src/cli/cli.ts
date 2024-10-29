@@ -1,11 +1,11 @@
 import { program } from 'commander';
-import { createResource } from './create.ts'; // Assuming you separate commands
-import { deleteResource } from './delete.ts';
+import { createResource } from './create'; 
+import { deleteResource } from './delete';
 
 program
     .version('1.0.0')
     .description('AeroSSR Command Line Interface');
-    
+
 // Create command
 program
     .command('create <type>')
